@@ -17,38 +17,12 @@
 
 <p>
   <a href="#quick-start">Quick Start</a> ·
-  <a href="#headline-results">Results</a> ·
   <a href="#citation">Citation</a>
 </p>
 
 </div>
 
 > 🎉 Our paper **“A Large-Scale Multi-Modal Benchmark and Robust Text-Free Inference for Breast Ultrasound Video Segmentation”** has been accepted by **ACM Multimedia 2026**.
-
-## Why TF-BVS?
-
-Medical video segmentation should not depend on a carefully written caption at test time. TF-BVS combines a Swin-B GroundingDINO backbone, OT-Prompt alignment, and an object-consistent temporal branch to keep masks stable across ultrasound frames—even when language is unavailable.
-
-<p align="center">
-  <img src="assets/model.png" alt="TF-BVS architecture" width="100%">
-</p>
-
-### The recipe
-
-| Ingredient | Role |
-| --- | --- |
-| 🧠 Swin-B + GroundingDINO | Multi-scale visual representation and mask decoding |
-| 🔄 OT-Prompt | Converts visual evidence into soft prompt tokens |
-| 🧭 Temporal branch | Propagates object-consistent information through clips |
-| 🛡️ Online validation | Selects `best_val.pth.tar` without touching the test split |
-
-## Headline results
-
-The following values are the paper-reported results on MBTUVS. Lower is better for HD95 and ASD.
-
-| Jaccard ↑ | F-measure ↑ | Dice ↑ | HD95 ↓ | ASD ↓ |
-| :---: | :---: | :---: | :---: | :---: |
-| **75.34** | **68.10** | **83.69** | **16.48** | **5.83** |
 
 ## Quick start
 
