@@ -5,6 +5,10 @@
 ### Text-Free Breast Ultrasound Video Segmentation
 
 <p>
+  <a href="assets/TF-BVS_ACM_MM_2026_Paper.pdf"><img src="https://img.shields.io/badge/Read%20the%20Paper-PDF-b91c1c?style=for-the-badge&logo=adobeacrobatreader&logoColor=white" alt="📄 Read the TF-BVS paper"></a>
+</p>
+
+<p>
   <a href="https://2026.acmmm.org/"><img src="https://img.shields.io/badge/ACM%20MM-2026%20Accepted-8A2BE2?style=for-the-badge" alt="ACM MM 2026 Accepted"></a>
   <img src="https://img.shields.io/badge/Task-Breast%20Ultrasound%20VOS-0ea5e9?style=for-the-badge" alt="Breast Ultrasound VOS">
   <img src="https://img.shields.io/badge/Mode-Text--Free%20Inference-22c55e?style=for-the-badge" alt="Text-Free Inference">
