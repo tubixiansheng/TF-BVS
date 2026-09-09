@@ -36,6 +36,24 @@
   <a href="assets/tf-bvs-model-architecture.pdf">Download the original PDF figure</a>
 </p>
 
+## Open-source status
+
+<p align="center">
+  <b>🚀 Release radar</b><br>
+  <code>code ━━━━━━━●━━━━━━ data</code>
+</p>
+
+| Component | Status |
+|:--|:--|
+| 🧠 Training and inference code | ✅ Open source |
+| 🧪 Validation-based checkpoint selection | ✅ Included |
+| 📏 Unified evaluation scripts | ✅ Included |
+| 🗺️ Model architecture figure | ✅ Available above |
+| 🩺 MBTUVS dataset | ⏳ Release pending |
+| 🎯 Pretrained weights | ⏳ Not redistributed yet |
+
+> ✨ The code is out. The data is waiting at the gate. Stay tuned for the next drop.
+
 ## Quick start
 
 ### 1. Install
