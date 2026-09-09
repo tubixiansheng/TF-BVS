@@ -129,15 +129,6 @@ scripts/rebuttal/evaluate_meter_mbtuvs.py   # unified evaluator
 
 ## Citation
 
-```bibtex
-@inproceedings{wu2026tfbvs,
-  title     = {A Large-Scale Multi-Modal Benchmark and Robust Text-Free Inference for Breast Ultrasound Video Segmentation},
-  author    = {Wu, Qiwei and Lai, Zhihui and Luo, Xiaoling and Kong, Heng and Chen, Foping and Zhang, Junhong and Liang, Guangfei},
-  booktitle = {Proceedings of the ACM International Conference on Multimedia},
-  year      = {2026}
-}
-```
-
 ## Notes
 
 - Please follow the licenses and terms of the upstream GroundingDINO, COCO, and dataset resources.
