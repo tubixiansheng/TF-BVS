@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+import argparse
+import csv
+from collections import Counter, defaultdict
+from pathlib import Path
+
+
+GRADE_NAMES = {0: "L2", 1: "L3", 2: "L4", 3: "L5"}
+RISK_NAMES = {0: "low(L2/L3)", 1: "high(L4/L5)"}
+
+
+def risk_id(label):
+    return 0 if int(label) in (0, 1) else 1
+
+
+def read_rows(path):
+    rows = []
+    with Path(path).open(newline="") as f:
+        for row in csv.DictReader(f):
+            rows.append(row)
+    return rows
+
+
+def aggregate_video_majority(rows):
+    by_video = defaultdict(list)
+    for row in rows:
+        by_video[row["video"]].append(row)
+
+    out = {}
+    ties = []
+    conflicts = []
+    for video, video_rows in by_video.items():
+        gts = Counter(int(r["gt_label_from_name"]) for r in video_rows)
+        gt = gts.most_common(1)[0][0]
+        if len(gts) > 1:
+            conflicts.append((video, dict(gts)))
+        preds = Counter(int(r["pred_label"]) for r in video_rows)
+        top_count = preds.most_common(1)[0][1]
+        top_preds = sorted([p for p, c in preds.items() if c == top_count])
+        if len(top_preds) > 1:
+            ties.append((video, dict(preds)))
+        pred = top_preds[0]
+        out[video] = (gt, pred)
+    return out, ties, conflicts
+
+
+def safe_div(a, b):
+    return float(a) / float(b) if b else 0.0
+
+
+def compute_metrics(items):
+    class_counts = Counter()
+    class_correct = Counter()
+    risk_counts = Counter()
+    risk_correct = Counter()
+    confusion = defaultdict(Counter)
+    risk_confusion = defaultdict(Counter)
+
+    for gt, pred in items:
+        class_counts[gt] += 1
+        class_correct[gt] += int(gt == pred)
+        confusion[gt][pred] += 1
+        gt_r, pred_r = risk_id(gt), risk_id(pred)
+        risk_counts[gt_r] += 1
+        risk_correct[gt_r] += int(gt_r == pred_r)
+        risk_confusion[gt_r][pred_r] += 1
+
+    return class_counts, class_correct, risk_counts, risk_correct, confusion, risk_confusion
+
+
+def print_report(title, items, output=""):
+    class_counts, class_correct, risk_counts, risk_correct, confusion, risk_confusion = compute_metrics(items)
+
+    total = sum(class_counts.values())
+    total_correct = sum(class_correct.values())
+    total_risk_correct = sum(risk_correct.values())
+
+    print(f"\n===== {title} =====")
+    print(f"[OK] samples: {total}")
+
+    print("\n4-class classification accuracy")
+    print(f" overall/video-weighted: {safe_div(total_correct, total):.4f} ({100*safe_div(total_correct, total):.2f}%)")
+    per_class_acc = []
+    for g in range(4):
+        acc = safe_div(class_correct[g], class_counts[g])
+        per_class_acc.append(acc)
+        print(f" {GRADE_NAMES[g]:>2} n={class_counts[g]:3d} correct={class_correct[g]:3d} acc={acc:.4f} ({100*acc:.2f}%)")
+    print(f" macro avg: {sum(per_class_acc)/4:.4f} ({100*sum(per_class_acc)/4:.2f}%)")
+
+    print("\nLow-vs-high risk accuracy")
+    print(f" overall/video-weighted: {safe_div(total_risk_correct, total):.4f} ({100*safe_div(total_risk_correct, total):.2f}%)")
+    per_risk_acc = []
+    for r in range(2):
+        acc = safe_div(risk_correct[r], risk_counts[r])
+        per_risk_acc.append(acc)
+        print(f" {RISK_NAMES[r]:>12} n={risk_counts[r]:3d} correct={risk_correct[r]:3d} acc={acc:.4f} ({100*acc:.2f}%)")
+    print(f" macro avg: {sum(per_risk_acc)/2:.4f} ({100*sum(per_risk_acc)/2:.2f}%)")
+
+    print("\n4-class confusion matrix (rows=GT, cols=Pred)")
+    print("GT\\Pred,L2,L3,L4,L5")
+    for gt in range(4):
+        print(",".join([GRADE_NAMES[gt]] + [str(confusion[gt][pred]) for pred in range(4)]))
+
+    print("\nRisk confusion matrix (rows=GT, cols=Pred)")
+    print("GT\\Pred,low,high")
+    for gt in range(2):
+        print(",".join([RISK_NAMES[gt]] + [str(risk_confusion[gt][pred]) for pred in range(2)]))
+
+    if output:
+        out = Path(output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        with out.open("w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["metric", "group", "n", "correct", "accuracy"])
+            writer.writerow(["4class", "overall", total, total_correct, safe_div(total_correct, total)])
+            for g in range(4):
+                writer.writerow(["4class", GRADE_NAMES[g], class_counts[g], class_correct[g], safe_div(class_correct[g], class_counts[g])])
+            writer.writerow(["4class", "macro", total, "", sum(per_class_acc) / 4])
+            writer.writerow(["risk", "overall", total, total_risk_correct, safe_div(total_risk_correct, total)])
+            for r in range(2):
+                writer.writerow(["risk", RISK_NAMES[r], risk_counts[r], risk_correct[r], safe_div(risk_correct[r], risk_counts[r])])
+            writer.writerow(["risk", "macro", total, "", sum(per_risk_acc) / 2])
+        print(f"\n[OK] summary CSV: {out}")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--csv", required=True, help="debug_label_csv generated by eval/inference_backbone_only.py")
+    parser.add_argument("--output", default="", help="optional output CSV path for video-level majority-vote summary")
+    parser.add_argument("--clip-output", default="", help="optional output CSV path for clip-level summary")
+    args = parser.parse_args()
+
+    rows = read_rows(args.csv)
+    if not rows:
+        raise RuntimeError(f"No usable rows found in {args.csv}")
+
+    clip_items = [(int(r["gt_label_from_name"]), int(r["pred_label"])) for r in rows]
+    video_items, ties, gt_conflicts = aggregate_video_majority(rows)
+    print(f"[OK] raw debug rows/clips: {len(rows)}")
+    print(f"[OK] unique videos: {len(video_items)}")
+    if ties:
+        print(f"[WARN] majority-vote ties: {len(ties)} (tie broken by smaller label id)")
+    if gt_conflicts:
+        print(f"[WARN] GT conflicts: {len(gt_conflicts)}")
+
+    print_report("clip-level accuracy", clip_items, args.clip_output)
+    print_report("video-level majority-vote accuracy", list(video_items.values()), args.output)
+
+
+if __name__ == "__main__":
+    main()

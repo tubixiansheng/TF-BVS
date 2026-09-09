@@ -1,0 +1,277 @@
+w_ot:
+  desc: weight of Sinkhorn-OT loss
+  value: 1.0
+w_pair:
+  desc: weight of cosine/L2 pair alignment loss
+  value: 0.2
+w_mmd:
+  desc: weight of distribution regularization (MMD)
+  value: 0.5
+w_tv:
+  desc: weight of temporal TV on surrogate prompts
+  value: 0.5
+accumulate_iter:
+  desc: gradient accumulation steps
+  value: 1
+
+ot_eps:
+  desc: Sinkhorn epsilon (entropy regularization)
+  value: 0.5
+ot_iters:
+  desc: Sinkhorn iterations
+  value: 50
+
+mmd_sigma:
+  desc: RBF kernel sigma for MMD
+  value: 1.0
+mmd_ref_num:
+  desc: how many text embeddings to sample from TextBank each step
+  value: 512
+mmd_bank_size:
+  desc: TextBank capacity
+  value: 8192
+
+
+cls_lr:
+  desc: learning rate for the classification head
+  value: 5e-5
+lr:
+  desc: main model learning rate
+  value: 5e-4
+weight_decay:
+  value: 1e-4
+clip_max_norm:
+  desc: gradient clipping max norm
+  value: 0.1
+enable_amp:
+  desc: whether to enable automatic mixed precision during training
+  value: true
+seed:
+  value: 42
+
+GroundingDINO:
+  desc: "the parameter of GroundingDINO"
+  value:
+    backbone: "swin_T_224_1k"
+    position_embedding: "sine"
+    pe_temperatureH: 20
+    pe_temperatureW: 20
+    return_interm_indices: [0, 1, 2, 3]
+    backbone_freeze_keywords: None
+    enc_layers: 6
+    dec_layers: 6
+    pre_norm: false
+    dim_feedforward: 2048
+    hidden_dim: 256
+    dropout: 0.0
+    nheads: 8
+    num_queries: 900
+    query_dim: 4
+    num_patterns: 0
+    num_feature_levels: 4
+    enc_n_points: 4
+    dec_n_points: 4
+    two_stage_type: "standard"
+    two_stage_bbox_embed_share: false
+    two_stage_class_embed_share: false
+    transformer_activation: "relu"
+    dec_pred_bbox_embed_share: true
+    dn_box_noise_scale: 1.0
+    dn_label_noise_ratio: 0.5
+    dn_label_coef: 1.0
+    dn_bbox_coef: 1.0
+    embed_init_tgt: true
+    dn_labelbook_size: 2000
+    max_text_len: 1024
+    text_encoder_type: "bert-base-uncased"
+    use_text_enhancer: true
+    use_fusion_layer: true
+    use_checkpoint: false
+    use_transformer_ckpt: false
+    use_text_cross_attention: true
+    text_dropout: 0.0
+    fusion_dropout: 0.0
+    fusion_droppath: 0.1
+    sub_sentence_present: true
+
+    pretrained_path: "pretrained/groundingdino_swint_ogc.pth"
+
+    aux_loss: true
+
+    full_tune: false
+    query_decay: 0.5
+    dec_lora: true
+    enc_lora: true
+    lora_rank: 32
+    temporal_layer: 3
+    tracking_alpha: 0.1
+
+    SegHead:
+      mask_dim: 256
+      n_heads: 8
+      n_points: 16
+      dropout: 0.0
+      n_layers: 3
+      use_self_attention: true
+      use_text_cross_attention: true
+
+
+    use_ot_prompt: true
+    textfree_infer: true
+    t_dim: null
+    num_prompt_tokens: 8
+    ot_hidden: 512
+    ot_pool: "mean"
+
+
+
+set_cost_class:
+  value: 4
+set_cost_bbox:
+  desc: the coefficient in the box matching cost
+  value: 5
+set_cost_giou:
+  desc: the coefficient in the box giou cost
+  value: 2
+set_cost_mask:
+  desc: mask coefficient in the matching cost
+  value: 5
+set_cost_dice:
+  desc: dice coefficient in the matching cost
+  value: 5
+set_cost_proj:
+  value: 5
+dataset_file:
+  value: ref_youtube_vos
+
+cls_loss_coef:
+  value: 4
+bbox_loss_coef:
+  value: 5
+giou_loss_coef:
+  value: 2
+mask_loss_coef:
+  value: 5
+dice_loss_coef:
+  value: 5
+proj_loss_coef:
+  value: 5
+eos_coef:
+  desc: Relative classification weight of the no-object class
+  value: 0.1
+
+dataset_name:
+  value: ref_youtube_vos
+dataset_path:
+  value: data/processed_breast_ultrasound_5frames
+num_frames:
+  value: 6
+output_dir:
+  desc: path where to save, keep empty for an auto-generated date-time labeled folder
+  value: 'output'
+num_workers:
+  desc: number of workers to load data
+  value: 8
+binary:
+  desc: whether binary classification
+  value: true
+
+wandb_mode:
+  desc: wandb logging mode. on - 'online', off - 'disabled'
+  value: 'disabled'
+
+eval_batch_size:
+  desc: "total test batch size"
+  value: 1
+
+
+TemporalBranch:
+  desc: "lightweight per-frame temporal branch settings"
+  value:
+    enable: true
+    batch_size: 2
+    feat_ch: 256
+    gru_hidden_dim: 256
+    use_exist_head: false
+    freeze_encoder: true
+    lr_factor: 1.0
+    lambda_sup: 1.0
+    lambda_dist: 0.0
+    dist_type: "mse"
+    supervise_start: false
+    max_gap: null
+    steps_per_main: 1
+    teacher_topk: 3
+    mem_override_after: 30
+    mem_override_conf: 0.7
+    dist_start_epoch: 30
+    dist_warmup_epochs: 2
+
+    corrupt_prob:
+      desc: "probability to corrupt mem mask (dataset-side). Use 0 to disable."
+      value: 0.1
+
+    per_channel_norm_guide:
+      desc: "normalize mask_embed per-channel before fuse (recommended true)"
+      value: true
+
+    head_sup_weight:
+      desc: "weight for BCEWithLogits loss supervising decoding from h_init (0 to disable)"
+      value: 1.0
+    head_sup_epochs:
+      desc: "number of initial epochs to apply head_init supervision"
+      value: 0
+
+    learnable_alpha:
+      desc: "whether to learn alpha scaling on guide"
+      value: true
+    alpha_channelwise:
+      desc: "if true, alpha is per-channel (shape 1,C,1,1); otherwise scalar"
+      value: true
+    alpha_init:
+      desc: "initial alpha (note: implementation applies sigmoid() if learnable, so init ~1.0 recommended)"
+      value: 1.0
+
+    use_guide_blend:
+      desc: "blend mem_feat and current feat in guide construction"
+      value: true
+    learnable_beta:
+      desc: "whether to learn blend weight beta (sigmoid constrained)"
+      value: true
+    beta_init:
+      desc: "initial beta (0..1), larger favors mem_feat"
+      value: 0.5
+
+    use_decoder_aspp:
+      desc: "use small ASPP in decoder"
+      value: true
+    use_decoder_depthwise:
+      desc: "use depthwise separable convs in decoder"
+      value: true
+    use_decoder_skip:
+      desc: "concatenate encoder feature as skip into decoder"
+      value: true
+
+    dual_scale:
+      desc: "enable low-res GRU + cross-scale fusion"
+      value: true
+    hidden_ch_low:
+      desc: "hidden channels for low-scale GRU"
+      value: 128
+
+    gamma_init:
+      desc: "initial scale factor for low->high fusion"
+      value: 0.5
+
+    per_channel_alpha:
+      desc: "legacy flag name for per-channel alpha (kept for backward compat)"
+      value: true
+    decode_head_first:
+      desc: "debug: whether to decode directly from h_init for first frame"
+      value: false
+    scheduled_sampling_prob:
+      desc: "placeholder for scheduled sampling (0 disables)"
+      value: 0.0
+    corrupt_dataset_side:
+      desc: "alias/legacy: dataset-side corrupt toggle"
+      value: 0.15

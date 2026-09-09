@@ -1,0 +1,49 @@
+# Large local data, checkpoints, and generated experiment outputs.
+output/
+outputs/
+ckpt/
+pretrained/
+data_buv2022/
+method/
+
+# Optional local datasets and generated dataset artifacts.
+*.pth
+*.pt
+*.pth.tar
+*.tar
+*.zip
+*.npz
+*.npy
+*.pkl
+*.pickle
+h5/
+*.h5
+
+# Native/CUDA extension build artifacts.
+build/
+dist/
+*.egg-info/
+*.egg
+*.so
+*.o
+.ninja_deps
+.ninja_log
+build.ninja
+
+# Python/cache/runtime files.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.log
+*.tmp
+
+# IDE / OS files.
+.DS_Store
+.idea/
+.vscode/
+
+# Local agent/tooling state.
+.agents/
+.codex/
