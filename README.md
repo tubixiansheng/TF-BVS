@@ -159,6 +159,19 @@ scripts/rebuttal/evaluate_meter_mbtuvs.py   # unified evaluator
 
 ## Citation
 
+If you use TF-BVS in your research, please cite:
+
+> Wu, Q., Lai, Z., Luo, X., Kong, H., Chen, F., Zhang, J., & Liang, G. (2026). A Large-Scale Multi-Modal Benchmark and Robust Text-Free Inference for Breast Ultrasound Video Segmentation. In *Proceedings of the 34th ACM International Conference on Multimedia (MM '26)*. https://doi.org/10.1145/3767308.3835065
+
+```bibtex
+@inproceedings{wu2026tfbvs,
+  author    = {Wu, Qiwei and Lai, Z. and Luo, X. and Kong, H. and Chen, F. and Zhang, J. and Liang, G.},
+  title     = {A Large-Scale Multi-Modal Benchmark and Robust Text-Free Inference for Breast Ultrasound Video Segmentation},
+  booktitle = {Proceedings of the 34th ACM International Conference on Multimedia},
+  year      = {2026},
+  doi       = {10.1145/3767308.3835065}
+}
+
 ## Notes
 
 - Please follow the licenses and terms of the upstream GroundingDINO, COCO, and dataset resources.
