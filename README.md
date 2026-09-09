@@ -24,6 +24,18 @@
 
 > 🎉 Our paper **“A Large-Scale Multi-Modal Benchmark and Robust Text-Free Inference for Breast Ultrasound Video Segmentation”** has been accepted by **ACM Multimedia 2026**.
 
+## Model overview
+
+<p align="center">
+  <img src="assets/tf-bvs-model-architecture.png" alt="TF-BVS model architecture" width="100%">
+</p>
+
+<p align="center"><em>TF-BVS: cross-frame backbone, frame-wise temporal branch, and LV2TOT prompt learning.</em></p>
+
+<p align="center">
+  <a href="assets/tf-bvs-model-architecture.pdf">Download the original PDF figure</a>
+</p>
+
 ## Quick start
 
 ### 1. Install
