@@ -140,7 +140,6 @@ scripts/rebuttal/evaluate_meter_mbtuvs.py   # unified evaluator
 
 ## Notes
 
-- Dataset files, pretrained weights, and the text encoder are not redistributed here.
 - Please follow the licenses and terms of the upstream GroundingDINO, COCO, and dataset resources.
 - If TF-BVS helps your research, consider ⭐ starring the repository and citing the paper.
 
