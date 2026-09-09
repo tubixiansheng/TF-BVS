@@ -1,4 +1,3 @@
-
 import json
 import pickle
 from abc import ABCMeta, abstractmethod

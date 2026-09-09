@@ -1,4 +1,3 @@
-
 """
 Various positional encodings for the transformer.
 """
