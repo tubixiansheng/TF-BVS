@@ -171,6 +171,7 @@ If you use TF-BVS in your research, please cite:
   year      = {2026},
   doi       = {10.1145/3767308.3835065}
 }
+```
 
 ## Notes
 
