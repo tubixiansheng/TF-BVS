@@ -96,9 +96,17 @@ export USE_TF=0
 
 Set `GroundingDINO.pretrained_path` and `dataset_path` in `configs/ytvos_swinb.yaml` to the corresponding local resources.
 
-### 2. Train with validation-based checkpoint selection
+### 2. Fresh training from epoch 0 with validation-based selection
 
 The validation wrapper trains one epoch at a time, evaluates the `valid` split after each epoch, and keeps the checkpoint with the best combined score. The test split is never used for model selection.
+
+**Initialization note.** This is a fresh TF-BVS training run, not a resumed run, but it is **not strict random initialization**. The reference recipe uses three pretrained resources:
+
+- `GroundingDINO.pretrained_path` loads the GroundingDINO Swin-B checkpoint during model construction;
+- `--pretrained_weights "$COCO_WEIGHTS"` loads the COCO Swin-B initialization on the first epoch;
+- `TEXT_ENCODER_PATH` provides the pretrained `bert-base-uncased` text encoder.
+
+The command intentionally does not pass `-ckpt` or `--resume-from`. The validation wrapper uses the pretrained initialization only for epoch 0, then loads the newly produced epoch checkpoint for subsequent epochs. Removing these initialization resources would be a different random-initialization experiment and would not reproduce the reported setup.
 
 ```bash
 python scripts/rebuttal/train_with_validation.py \
