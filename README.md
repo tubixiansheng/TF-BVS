@@ -176,12 +176,22 @@ If you use TF-BVS in your research, please cite:
 > Wu, Q., Lai, Z., Luo, X., Kong, H., Chen, F., Zhang, J., & Liang, G. (2026). A Large-Scale Multi-Modal Benchmark and Robust Text-Free Inference for Breast Ultrasound Video Segmentation. In *Proceedings of the 34th ACM International Conference on Multimedia (MM '26)*. https://doi.org/10.1145/3767308.3835065
 
 ```bibtex
-@inproceedings{wu2026tfbvs,
-  author    = {Wu, Qiwei and Lai, Z. and Luo, X. and Kong, H. and Chen, F. and Zhang, J. and Liang, G.},
-  title     = {A Large-Scale Multi-Modal Benchmark and Robust Text-Free Inference for Breast Ultrasound Video Segmentation},
+@inproceedings{10.1145/3767308.3835065,
+  author = {Wu, Qiwei and Lai, Zhihui and Luo, Xiaoling and Kong, Heng and Chen, Foping and Zhang, Junhong and Liang, Guangfei},
+  title = {A Large-Scale Multi-Modal Benchmark and Robust Text-Free Inference for Breast Ultrasound Video Segmentation},
+  year = {2026},
+  isbn = {9798400722134},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3767308.3835065},
+  doi = {10.1145/3767308.3835065},
+  abstract = {Breast cancer is one of the leading causes of death among women worldwide, and accurate segmentation of breast ultrasound images is of crucial importance. Compared with static images, videos have advantages in capturing lesions' dynamic and spatial information. However, research on breast tumor ultrasound video segmentation remains extremely limited due to the lack of high-quality publicly available datasets and the high cost of frame-by-frame annotation. In this situation, sparse-frame annotation of videos serves as a more affordable strategy, and diagnostic reports can be used to provide global semantic guidance for videos. However, diagnostic reports are unavailable in advance during clinical diagnosis, which limits the reasoning ability of current multi-modal models. To solve these issues, we construct the first large-scale multi-modal benchmark dataset, containing 1,085 videos with the corresponding clinical diagnostic text and tumor grading information. This dataset establishes a foundation for algorithm research and performance evaluation. Furthermore, we propose a multi-modal training framework with Text-Free inference for Breast tumor ultrasound Video Segmentation (TF-BVS). TF-BVS incorporates a Label-aware Visual-To-Text Optimal Transport module (LV2TOT) to generate pseudo-text token embeddings highly consistent with clinical text distributions, thus enabling inference under text-free conditions in line with clinical workflows. TF-BVS employs a dual-branch joint training strategy, achieving robust segmentation performance even with less annotated training data. Extensive experiments demonstrate that TF-BVS achieves state-of-the-art segmentation results on both the proposed multi-modal breast ultrasound dataset and the public VTUS thyroid ultrasound dataset.},
   booktitle = {Proceedings of the 34th ACM International Conference on Multimedia},
-  year      = {2026},
-  doi       = {10.1145/3767308.3835065}
+  pages = {11671–11680},
+  numpages = {10},
+  keywords = {multi-modal video segmentation, breast tumor ultrasound video, benchmark dataset, text-free inference},
+  location = {Rio de Janeiro, Brazil},
+  series = {MM '26}
 }
 ```
 
