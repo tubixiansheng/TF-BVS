@@ -54,7 +54,6 @@
 | 📏 Unified evaluation scripts | ✅ Included |
 | 🗺️ Model architecture figure | ✅ Available above |
 | 🩺 MBTUVS dataset | ⏳ Release pending |
-| 🎯 Pretrained weights | ⏳ Not redistributed yet |
 
 > ✨ The code is out. The data is waiting at the gate. Stay tuned for the next drop.
 
